@@ -1,223 +1,575 @@
-<!DOCTYPE HTML>
-<!--
-    Customized from "Massively" by HTML5 UP
-    html5up.net | @ajlkn
--->
-<html>
-    <head>
-        <title>Xicheng He | Environmental Engineering</title>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-        <link rel="stylesheet" href="assets/css/main.css" />
-        <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-    </head>
-    <body class="is-preload">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Xicheng He | Sample Academic Website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        <!-- Wrapper -->
-        <div id="wrapper" class="fade-in">
+  <!-- 字体：干净的无衬线字体 -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
-            <!-- Intro -->
-            <div id="intro">
-                <h1>Xicheng He</h1>
-                <p>
-                    PhD candidate in Energy, Environmental &amp; Chemical Engineering<br />
-                    Washington University in St. Louis
-                </p>
-                <ul class="actions">
-                    <li><a href="#main" class="button icon solid solo fa-arrow-down scrolly">Enter</a></li>
-                </ul>
-            </div>
+  <style>
+    /* 全局样式 */
+    :root {
+      --bg: #f7f7f8;
+      --bg-alt: #ffffff;
+      --text-main: #111111;
+      --text-muted: #555555;
+      --accent: #111111;
+      --border-subtle: #e2e2e4;
+      --max-width: 880px;
+    }
 
-            <!-- Header -->
-            <header id="header">
-                <a href="index.html" class="logo">Xicheng He</a>
-            </header>
+    * {
+      box-sizing: border-box;
+    }
 
-            <!-- Nav -->
-            <nav id="nav">
-                <ul class="links">
-                    <li class="active"><a href="index.html">Home</a></li>
-                    <!-- 下面三个链接可以以后做成单独页面，现在先指向主页 -->
-                    <li><a href="#research">Research</a></li>
-                    <li><a href="#publications">Publications</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-                <ul class="icons">
-                    <!-- 把 # 换成你自己的链接即可 -->
-                    <li><a href="https://scholar.google.com" class="icon solid fa-graduation-cap"><span class="label">Google Scholar</span></a></li>
-                    <li><a href="https://www.linkedin.com" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
-                    <li><a href="https://github.com" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
-                </ul>
-            </nav>
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.6;
+    }
 
-            <!-- Main -->
-            <div id="main">
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
 
-                <!-- Featured: About -->
-                <article class="post featured" id="about">
-                    <header class="major">
-                        <span class="date">About</span>
-                        <h2><a href="#">About me</a></h2>
-                        <p>
-                            I am a PhD candidate in the Department of Energy, Environmental &amp;
-                            Chemical Engineering at Washington University in St. Louis. My research
-                            focuses on electrochemical and geochemical processes that control the
-                            behavior of inorganic contaminants in natural and engineered water systems,
-                            with an emphasis on electrocoagulation, interfacial redox reactions, and
-                            solid phase transformations.
-                        </p>
-                    </header>
-                    <!-- 这里的图片可以换成你自己的头像，放到 images/ 里 -->
-                    <a href="#" class="image main"><img src="images/pic01.jpg" alt="Profile" /></a>
-                    <ul class="actions special">
-                        <!-- 把 cv.pdf 换成你上传的简历文件名 -->
-                        <li><a href="cv.pdf" class="button large">Download CV</a></li>
-                    </ul>
-                </article>
+    a:hover {
+      text-decoration: underline;
+    }
 
-                <!-- Posts -->
-                <section class="posts">
+    /* 顶部导航 */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(12px);
+      background: rgba(247, 247, 248, 0.92);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+    }
 
-                    <!-- Research interests -->
-                    <article id="research">
-                        <header>
-                            <span class="date">Research</span>
-                            <h2><a href="#">Research interests</a></h2>
-                        </header>
-                        <a href="#" class="image fit"><img src="images/pic02.jpg" alt="" /></a>
-                        <p>
-                            My research aims to understand how adsorption, redox reactions, and
-                            mineral transformation control the fate of contaminants such as arsenic,
-                            selenium, chromium, uranium, and rare earth elements. I combine
-                            bench scale flow through experiments with electrochemical methods and
-                            advanced solid characterization to build mechanistic models that can
-                            inform treatment design and risk assessment.
-                        </p>
-                        <ul class="actions special">
-                            <li><a href="#publications" class="button">See publications</a></li>
-                        </ul>
-                    </article>
+    .nav {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
-                    <!-- Current projects -->
-                    <article>
-                        <header>
-                            <span class="date">Current projects</span>
-                            <h2><a href="#">Selected projects</a></h2>
-                        </header>
-                        <a href="#" class="image fit"><img src="images/pic03.jpg" alt="" /></a>
-                        <p>
-                            • Flow through iron electrocoagulation for arsenic and selenium removal<br />
-                            • Redox driven transformation of iron oxides and contaminant stability<br />
-                            • Resource recovery of rare earth elements from industrial wastewater<br />
-                            <!-- 这些条目你可以按自己情况改 -->
-                        </p>
-                        <ul class="actions special">
-                            <li><a href="#about" class="button">More about my work</a></li>
-                        </ul>
-                    </article>
+    .nav-left {
+      font-weight: 500;
+      font-size: 15px;
+    }
 
-                    <!-- Publications -->
-                    <article id="publications">
-                        <header>
-                            <span class="date">Publications</span>
-                            <h2><a href="#">Selected publications</a></h2>
-                        </header>
-                        <a href="#" class="image fit"><img src="images/pic04.jpg" alt="" /></a>
-                        <p>
-                            This is a short list of representative papers. You can replace these
-                            placeholders with your own citations.
-                        </p>
-                        <p>
-                            1. X. He, et al. <em>Title of your paper on electrocoagulation</em>,
-                            Environmental Science &amp; Technology, 2024.<br />
-                            2. X. He, et al. <em>Title of your paper on selenium or arsenic</em>,
-                            Journal name, year.<br />
-                            3. X. He, et al. <em>Another representative paper</em>, Journal name, year.
-                        </p>
-                        <ul class="actions special">
-                            <li><a href="publications.pdf" class="button">Full publication list</a></li>
-                        </ul>
-                    </article>
+    .nav-right a {
+      margin-left: 18px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
 
-                    <!-- Teaching / service (optional) -->
-                    <article>
-                        <header>
-                            <span class="date">Teaching &amp; service</span>
-                            <h2><a href="#">Teaching, mentoring, and service</a></h2>
-                        </header>
-                        <a href="#" class="image fit"><img src="images/pic05.jpg" alt="" /></a>
-                        <p>
-                            I have served as a teaching assistant for undergraduate and graduate
-                            courses in environmental engineering and have mentored undergraduate and
-                            rotation students on research projects related to electrochemical water
-                            treatment and geochemistry. I am also active in professional service,
-                            including manuscript review and conference participation.
-                        </p>
-                    </article>
+    .nav-right a:hover {
+      color: var(--text-main);
+      text-decoration: none;
+    }
 
-                </section>
+    /* 页面通用布局 */
+    main {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
 
-                <!-- Simple pagination (not really used here) -->
-                <footer>
-                    <div class="pagination">
-                        <a href="#" class="page active">1</a>
-                    </div>
-                </footer>
+    section {
+      padding: 72px 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
 
-            </div>
+    section:last-of-type {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
 
-            <!-- Footer -->
-            <footer id="footer">
-                <section id="contact">
-                    <h2>Contact</h2>
-                    <p>
-                        If you are interested in my research or potential collaborations, please feel
-                        free to contact me by email.
-                    </p>
-                    <div class="split contact">
-                        <section class="alt">
-                            <h3>Affiliation</h3>
-                            <p>
-                                Department of Energy, Environmental &amp; Chemical Engineering<br />
-                                Washington University in St. Louis<br />
-                                St. Louis, MO, USA
-                            </p>
-                        </section>
-                        <section>
-                            <h3>Email</h3>
-                            <!-- 把邮箱改成你的 -->
-                            <p><a href="mailto:h.xicheng@wustl.edu">h.xicheng@wustl.edu</a></p>
-                        </section>
-                        <section>
-                            <h3>Links</h3>
-                            <ul class="icons alt">
-                                <li><a href="https://scholar.google.com" class="icon solid fa-graduation-cap"><span class="label">Google Scholar</span></a></li>
-                                <li><a href="https://www.linkedin.com" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
-                                <li><a href="https://github.com" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
-                            </ul>
-                        </section>
-                    </div>
-                </section>
-            </footer>
+    .section-label {
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
 
-            <!-- Copyright -->
-            <div id="copyright">
-                <ul>
-                    <li>&copy; Xicheng He</li>
-                    <li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
-                </ul>
-            </div>
+    .section-title {
+      font-size: 26px;
+      margin: 0 0 10px;
+      font-weight: 500;
+    }
 
+    .section-intro {
+      max-width: 640px;
+      font-size: 15px;
+      color: var(--text-muted);
+      margin-bottom: 26px;
+    }
+
+    /* Hero 区域 */
+    .hero {
+      padding-top: 56px;
+      padding-bottom: 80px;
+      display: grid;
+      grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.4fr);
+      grid-column-gap: 40px;
+      align-items: center;
+    }
+
+    .hero-title {
+      font-size: 40px;
+      line-height: 1.1;
+      margin: 0 0 16px;
+      font-weight: 600;
+    }
+
+    .hero-subtitle {
+      font-size: 17px;
+      color: var(--text-muted);
+      margin-bottom: 22px;
+      max-width: 520px;
+    }
+
+    .hero-meta {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .hero-meta span {
+      display: inline-block;
+      margin-right: 14px;
+    }
+
+    .hero-photo-wrapper {
+      justify-self: center;
+    }
+
+    .hero-photo {
+      width: 200px;
+      height: 200px;
+      border-radius: 24px;
+      background: linear-gradient(145deg, #d8dde7, #f6f7fb);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      box-shadow:
+        0 18px 60px rgba(15, 23, 42, 0.18),
+        0 0 0 1px rgba(255, 255, 255, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: #363b4a;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    /* About 文本块 */
+    .text-block {
+      max-width: 700px;
+      font-size: 15px;
+      color: var(--text-main);
+    }
+
+    .text-block p {
+      margin-top: 0;
+      margin-bottom: 12px;
+    }
+
+    /* 左标题右内容布局（Research / Contact 用） */
+    .two-column {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 2fr);
+      grid-column-gap: 40px;
+      align-items: flex-start;
+    }
+
+    .two-column h3 {
+      margin-top: 0;
+      margin-bottom: 8px;
+      font-weight: 500;
+      font-size: 18px;
+    }
+
+    .muted {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    /* Research 列表 */
+    .research-list {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      grid-row-gap: 18px;
+    }
+
+    .research-item-title {
+      font-size: 15px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .research-item-text {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    /* Publications */
+    .pub-year {
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin: 24px 0 8px;
+    }
+
+    .pub-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .pub-item {
+      font-size: 14px;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px dotted rgba(0, 0, 0, 0.06);
+    }
+
+    .pub-title {
+      font-weight: 500;
+    }
+
+    .pub-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .pub-links {
+      margin-top: 6px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .chip-link {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(255, 255, 255, 0.9);
+      text-decoration: none;
+      color: var(--text-muted);
+    }
+
+    .chip-link:hover {
+      color: var(--text-main);
+      border-color: rgba(0, 0, 0, 0.18);
+      text-decoration: none;
+    }
+
+    /* News */
+    .news-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 14px;
+    }
+
+    .news-item {
+      display: flex;
+      align-items: baseline;
+      margin-bottom: 8px;
+    }
+
+    .news-date {
+      width: 80px;
+      font-size: 12px;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    .news-text {
+      flex: 1;
+    }
+
+    /* Contact */
+    .contact-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 14px;
+    }
+
+    .contact-list li {
+      margin-bottom: 6px;
+    }
+
+    /* footer */
+    footer {
+      max-width: var(--max-width);
+      margin: 40px auto 24px;
+      padding: 0 20px;
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 16px;
+    }
+
+    /* 响应式 */
+    @media (max-width: 860px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+        grid-row-gap: 32px;
+      }
+
+      .hero-photo-wrapper {
+        order: -1;
+      }
+
+      .hero-title {
+        font-size: 32px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .two-column {
+        grid-template-columns: minmax(0, 1fr);
+        grid-row-gap: 18px;
+      }
+
+      section {
+        padding: 56px 0;
+      }
+
+      .nav-right {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <div class="nav-left">Xicheng He</div>
+    <div class="nav-right">
+      <a href="#about">About</a>
+      <a href="#research">Research</a>
+      <a href="#publications">Publications</a>
+      <a href="#news">News</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <!-- Hero -->
+  <section class="hero" id="top">
+    <div>
+      <div class="hero-tag">Environmental Geochemistry and Electrochemical Water Treatment</div>
+      <h1 class="hero-title">Xicheng He</h1>
+      <p class="hero-subtitle">
+        I study how iron minerals and electrochemical processes control the fate of inorganic contaminants
+        such as arsenic, selenium, chromium, and uranium in natural and engineered waters.
+      </p>
+      <div class="hero-meta">
+        <span>PhD Candidate · Washington University in St. Louis</span>
+        <span>Department of Energy, Environmental &amp; Chemical Engineering</span>
+      </div>
+    </div>
+
+    <div class="hero-photo-wrapper">
+      <!-- 這個方塊未來可以換成你的照片 -->
+      <div class="hero-photo">
+        Your photo here
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about">
+    <div class="section-label">About</div>
+    <div class="text-block">
+      <p>
+        I am a PhD candidate in the Department of Energy, Environmental &amp; Chemical Engineering at
+        Washington University in St. Louis. My research focuses on reactions of critical elements and inorganic
+        contaminants at iron oxide water interfaces.
+      </p>
+      <p>
+        I combine environmental geochemistry, electrochemistry, and materials characterization to understand how
+        adsorption, redox, and solid transformation processes govern contaminant mobility. I am particularly
+        interested in flow through electrocoagulation systems and iron mineral transformations relevant to drinking
+        water treatment and groundwater quality.
+      </p>
+    </div>
+  </section>
+
+  <!-- Research -->
+  <section id="research">
+    <div class="two-column">
+      <div>
+        <div class="section-label">Research</div>
+        <h2 class="section-title">Current themes</h2>
+        <p class="section-intro">
+          I build mechanistic pictures that connect mineral scale reactions to treatment performance and long term
+          water quality outcomes.
+        </p>
+      </div>
+      <div>
+        <div class="research-list">
+          <div>
+            <div class="research-item-title">Flow through iron electrocoagulation</div>
+            <p class="research-item-text">
+              How reactor configuration, hydrodynamics, and iron dosing shape arsenic and selenium removal across
+              complex water chemistries.
+            </p>
+          </div>
+
+          <div>
+            <div class="research-item-title">Redox active iron minerals</div>
+            <p class="research-item-text">
+              Formation and transformation of green rust, magnetite, and related phases, and their roles in reducing
+              selenium and chromium in oxic and anoxic environments.
+            </p>
+          </div>
+
+          <div>
+            <div class="research-item-title">From batch experiments to long term operation</div>
+            <p class="research-item-text">
+              Linking short term kinetic experiments, solid phase characterization, and long term performance to
+              anticipate treatment outcomes beyond a single water matrix.
+            </p>
+          </div>
         </div>
+        <div class="pill">Electrochemistry · Geochemistry · Water treatment</div>
+      </div>
+    </div>
+  </section>
 
-        <!-- Scripts -->
-        <script src="assets/js/jquery.min.js"></script>
-        <script src="assets/js/jquery.scrollex.min.js"></script>
-        <script src="assets/js/jquery.scrolly.min.js"></script>
-        <script src="assets/js/browser.min.js"></script>
-        <script src="assets/js/breakpoints.min.js"></script>
-        <script src="assets/js/util.js"></script>
-        <script src="assets/js/main.js"></script>
+  <!-- Publications -->
+  <section id="publications">
+    <div class="section-label">Publications</div>
+    <h2 class="section-title">Selected work</h2>
+    <p class="section-intro">
+      This is a placeholder list to show formatting. We can later replace it with your actual papers and structure it
+      by year, topic, or contaminant.
+    </p>
 
-    </body>
+    <div>
+      <div class="pub-year">2025</div>
+      <ul class="pub-list">
+        <li class="pub-item">
+          <div class="pub-title">
+            Flow through iron electrocoagulation for arsenic removal across diverse groundwater chemistries
+          </div>
+          <div class="pub-meta">
+            X. He, D. Giammar · Environmental Science &amp; Technology (in revision)
+          </div>
+          <div class="pub-links">
+            <a class="chip-link" href="#">Preprint</a>
+            <a class="chip-link" href="#">PDF</a>
+          </div>
+        </li>
+      </ul>
+
+      <div class="pub-year">2024</div>
+      <ul class="pub-list">
+        <li class="pub-item">
+          <div class="pub-title">
+            Selenium redox transformations by iron minerals in flow through systems
+          </div>
+          <div class="pub-meta">
+            X. He et al. · Journal to be determined
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- News -->
+  <section id="news">
+    <div class="section-label">News</div>
+    <h2 class="section-title">Recent updates</h2>
+    <ul class="news-list">
+      <li class="news-item">
+        <div class="news-date">Dec 2025</div>
+        <div class="news-text">
+          Submitted revised manuscript on selenium removal by flow through electrocoagulation.
+        </div>
+      </li>
+      <li class="news-item">
+        <div class="news-date">Nov 2025</div>
+        <div class="news-text">
+          Gave an invited seminar on iron electrocoagulation for small drinking water systems.
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <div class="two-column">
+      <div>
+        <div class="section-label">Contact</div>
+        <h2 class="section-title">Get in touch</h2>
+        <p class="section-intro">
+          For collaborations, questions about my work, or requests for manuscripts, the best way to reach me is by
+          email.
+        </p>
+      </div>
+      <div>
+        <ul class="contact-list">
+          <li>Email: <a href="mailto:h.xicheng@wustl.edu">h.xicheng@wustl.edu</a></li>
+          <li>Google Scholar: <a href="#">scholar profile</a></li>
+          <li>ORCID: <a href="#">0000-0000-0000-0000</a></li>
+          <li>CV: <a href="#">Download CV (PDF)</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div>© 2025 Xicheng He</div>
+  <div>Built as a minimal sample inspired by Tobias Ahlin style.</div>
+</footer>
+
+</body>
 </html>
