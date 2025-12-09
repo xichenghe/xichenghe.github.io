@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Research - Xicheng He</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  
+  <style>
+    /* 基础设置 */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont,
+        "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+      background: #ffffff;
+      color: #111111;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 顶部导航栏 */
+    .site-header {
+      position: fixed;
+      top: 0; left: 0; right: 0; 
+      z-index: 50;
+      padding: 1rem 2.4rem;
+      display: flex;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    .site-header-inner {
+      width: 100%; max-width: 1200px;
+      display: flex; align-items: center;
+      justify-content: space-between;
+    }
+    .site-logo {
+      font-size: 0.9rem; font-weight: 600; letter-spacing: 0.16em;
+      text-transform: uppercase; color: #111;
+    }
+    .site-nav {
+      display: flex;
+      gap: 1.6rem;
+      font-size: 0.9rem;
+      align-items: center;
+    }
+
+    /* 和 index 一样的写法：轻微透明 + 下划线动画 */
+    .site-nav a {
+      position: relative;
+      opacity: 0.78;
+      padding-bottom: 0.1rem;
+      color: #111111;
+      text-decoration: none;          /* ✅ 关掉浏览器默认下划线 */
+      transition: opacity 0.18s ease, color 0.18s ease;
+    }
+
+    .site-nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 1px;
+      background: #111111;
+      transition: width 0.2s ease;
+    }
+/* ✅ 彻底禁止 CV 使用下滑线伪元素 */
+.site-nav .cv-link::after,
+.site-nav .cv-link:hover::after {
+  content: none;
+  width: 0;
+  height: 0;
+}
+
+/* 让 CV 按钮不使用下划线效果 */
+.cv-link:hover {
+  background: rgba(17, 17, 17, 0.12);
+  color: #000000;
+  border-color: rgba(17, 17, 17, 0.65);
+  opacity: 1;
+}
+
+    /* hover：不加粗，只是变清晰 + 下划线动画 */
+    .site-nav a:hover {
+      opacity: 1;
+      color: #000000;
+    }
+    .site-nav a:hover::after {
+      width: 100%;
+    }
+
+    /* 当前页面：只加粗，不要下划线 */
+    .site-nav a.active {
+      opacity: 1;
+      color: #000000;
+      font-weight: 600;
+    }
+    /* 禁止 active 显示下划线（包括 hover 的时候） */
+    .site-nav a.active::after,
+    .site-nav a.active:hover::after {
+      width: 0;
+    }
+
+
+    .cv-link {
+      padding: 0.12rem 0.7rem; border-radius: 999px;
+      border: 1px solid rgba(0, 0, 0, 0.3); font-size: 0.82rem;
+    }
+
+    /* 背景光晕容器 */
+    .ambient-canvas {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 100vh;
+      overflow: hidden;
+      z-index: 0;
+      pointer-events: none;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 10%, transparent 40%);
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 10%, transparent 40%);
+    }
+
+    .noise-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      opacity: 0.08;
+      filter: url(#noiseFilter);
+      mix-blend-mode: overlay;
+    }
+
+    .blob-container {
+      position: absolute;
+      top: -20%;
+      left: -20%; right: -20%; bottom: -20%;
+      filter: blur(100px);
+      background: #fff;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.8;
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+      animation-direction: alternate;
+      transform-origin: center center;
+    }
+
+    .blob-purple {
+      top: -20%;
+      left: 20%;
+      width: 70vw;
+      height: 60vw;
+      background: #f2f7f4;   /* 柔白泛青 */
+      animation-duration: 4s;
+      animation-name: drift-1;
+    }
+
+    .blob-blue {
+      top: 0%;
+      right: 0%;
+      width: 60vw;
+      height: 70vw;
+      background: #9ce5d3;   /* 主薄荷绿 */
+      animation-duration: 5s;
+      animation-name: drift-2;
+    }
+
+    .blob-cyan {
+      top: -20%;
+      left: 30%;
+      width: 50vw;
+      height: 50vw;
+      background: #bfeef7;   /* 淡天空蓝 */
+      opacity: 0.45;
+      animation-duration: 4s;
+      animation-name: drift-3;
+    }
+
+    @keyframes drift-1 {
+      0%   { transform: translate(-180px, -120px) scale(1); }
+      50%  { transform: translate(40px, 40px)    scale(1.08); }
+      100% { transform: translate(160px, 80px)   scale(1.15); }
+    }
+
+    @keyframes drift-2 {
+      0%   { transform: translate(120px, -100px) scale(1); }
+      50%  { transform: translate(-60px, 40px)   scale(1.1); }
+      100% { transform: translate(-180px, 20px)  scale(1.2); }
+    }
+
+    @keyframes drift-3 {
+      0%   { transform: translate(-140px, 0px)   scale(0.95); }
+      50%  { transform: translate(80px, 120px)   scale(1.08); }
+      100% { transform: translate(40px, -80px)   scale(1.02); }
+    }
+
+    /* 内容整体容器 */
+    .content-wrapper {
+      position: relative;
+      z-index: 10;
+      padding-top: 160px; 
+      max-width: 1100px;
+      margin: 0 auto;
+      padding-left: 2.4rem; padding-right: 2.4rem;
+    }
+
+    .page-title {
+      font-size: 3.2rem; font-weight: 700; color: #111;
+      margin-bottom: 0.8rem;
+    }
+    .page-subtitle {
+      font-size: 1.15rem; color: #555; line-height: 1.6; max-width: 650px;
+    }
+
+    /* 第一部分：Research overview */
+    .research-section {
+      padding: 4.5rem 0 6.5rem;
+      display: flex; justify-content: center;
+    }
+    .research-inner {
+      width: 100%; max-width: 1100px; text-align: center;
+    }
+    .research-title {
+      font-size: 1.3rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: #4b5563; margin-bottom: 1rem;
+    }
+    .research-subtitle {
+      font-size: 1.8rem; font-weight: 600;
+      color: #111827; margin-bottom: 2.4rem;
+    }
+    .research-graphic-wrap {
+      display: flex; justify-content: center;
+    }
+    .research-graphic {
+      width: 100%; max-width: 900px; overflow: visible;
+    }
+    .research-graphic text {
+      font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont,
+        "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    .research-bubble {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: bubbleDrift 24s ease-in-out infinite alternate;
+    }
+    .research-bubble-middle {
+      animation-duration: 28s;
+      animation-delay: 0.6s;
+    }
+    .research-bubble-right {
+      animation-duration: 32s;
+      animation-delay: 1.2s;
+    }
+    @keyframes bubbleDrift {
+      0%   { transform: translate(0px, 2px)  scale(1.0); opacity: 0.95; }
+      25%  { transform: translate(-8px, -6px) scale(1.03); opacity: 1; }
+      50%  { transform: translate(6px, 4px)  scale(0.99); opacity: 0.96; }
+      75%  { transform: translate(-5px, 7px) scale(1.02); opacity: 0.98; }
+      100% { transform: translate(4px, -3px) scale(1.0);  opacity: 0.97; }
+    }
+
+    @media (max-width: 800px) {
+      .research-subtitle { font-size: 1.5rem; }
+    }
+
+    /* 第二部分：Approaches 区块（弱化卡片感） */
+    .approach-section {
+      padding: 3rem 0 5rem;
+      display: flex;
+      justify-content: center;
+    }
+    .approach-wrapper {
+      width: 100%;
+      max-width: 1100px;
+    }
+    .approach-title {
+      text-align: center;
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #4b5563;
+      margin-bottom: 22px;
+    }
+
+    .approach-card {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+    }
+
+    .layout {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .row-3col {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .row-2col {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      align-items: stretch;
+      margin-top: 8px;
+    }
+
+    .tile-reaction,
+    .tile-bottom {
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      background: rgba(255, 255, 255, 0.68);
+      padding: 14px 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-shadow: none;
+    }
+
+    .block-title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .block-sub {
+      font-size: 13px;
+      color: #4b5563;
+      margin-top: 4px;
+      margin-bottom: 4px;
+    }
+
+    .block-list {
+      margin-left: 1.1em;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .block-list li + li {
+      margin-top: 2px;
+    }
+
+    .scene {
+      min-height: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      position: relative;
+    }
+
+    .scene-redox {
+      gap: 18px;
+    }
+
+    .molecule {
+      width: 80px;
+      height: 80px;
+      position: relative;
+    }
+
+    .atom {
+      position: absolute;
+      border-radius: 999px;
+      box-shadow: 0 8px 16px rgba(15, 23, 42, 0.08);
+    }
+
+    .atom-fe { background: #f2a13a; }
+    .atom-oxide { background: #9aa4b5; }
+    .atom-product { background: #34d399; }
+    .atom-oxyanion { background: #f97373; }
+    .atom-redox { background: #60a5fa; }
+
+    .mol-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .mol-label {
+      font-size: 12px;
+      color: #4b5563;
+    }
+
+    /* Phase transformation 动画 */
+    .molecule.m1 .atom:nth-child(1) {
+      width:26px;height:26px;left:6px;top:30px;animation: a1 4.8s ease-in-out infinite;
+    }
+    .molecule.m1 .atom:nth-child(2) {
+      width:30px;height:30px;left:34px;top:14px;animation: a2 5.1s ease-in-out infinite;
+    }
+    .molecule.m1 .atom:nth-child(3) {
+      width:24px;height:24px;left:48px;top:46px;animation: a3 4.4s ease-in-out infinite;
+    }
+
+    /* Adsorption */
+    .molecule.m2 {
+      width: 100px;
+      height: 80px;
+    }
+
+    .molecule.m2 .atom.ads-ox {
+      width:18px;height:18px;left:8px;top:40px;animation: adsorb 3.6s ease-in-out infinite;
+    }
+    .molecule.m2 .atom:nth-child(2) {
+      width:22px;height:22px;left:46px;top:22px;animation: a1 5s ease-in-out infinite;
+    }
+    .molecule.m2 .atom:nth-child(3) {
+      width:24px;height:24px;left:64px;top:44px;animation: a3 4.2s ease-in-out infinite;
+    }
+
+    .molecule.m2 .oxy-label,
+    .molecule.m2 .solid-label {
+      position: absolute;
+      font-size: 12px;
+      color: #4b5563;
+    }
+
+    .molecule.m2 .oxy-label {
+      left: 4px;
+      top: 68px;
+    }
+
+    .molecule.m2 .solid-label {
+      left: 70px;
+      top: 68px;
+    }
+
+    /* Redox */
+    .reactant-group {
+      position: relative;
+      width: 90px;
+      height: 80px;
+    }
+
+    .molecule.m3-left {
+      width: 90px;
+      height: 80px;
+    }
+
+    .molecule.m3-left .atom:nth-child(1) {
+      width:26px;height:26px;left:10px;top:30px;animation: a1 4.5s ease-in-out infinite;
+    }
+    .molecule.m3-left .atom:nth-child(2) {
+      width:26px;height:26px;left:46px;top:28px;animation: a2 5.3s ease-in-out infinite;
+    }
+
+    .molecule.m3-right {
+      width: 90px;
+      height: 80px;
+    }
+
+    .molecule.m3-right .atom:nth-child(1) {
+      width:26px;height:26px;left:10px;top:30px;animation: a1 4.5s ease-in-out infinite;
+    }
+    .molecule.m3-right .atom:nth-child(2) {
+      width:26px;height:26px;left:46px;top:28px;animation: a2 5.3s ease-in-out infinite;
+    }
+
+    .electron-dot {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #3b82f6;
+      box-shadow: 0 0 8px rgba(59, 130, 246, 0.8);
+      top: 36px;
+      left: 16px;
+      animation: electronMove 2.2s ease-in-out infinite;
+    }
+
+    .arrow {
+      font-size: 22px;
+      opacity: 0.7;
+      animation: arrowPulse 1.8s ease-in-out infinite;
+    }
+
+    .bottom-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .bottom-list {
+      list-style: none;
+      font-size: 13px;
+      line-height: 1.5;
+      margin-top: 4px;
+    }
+
+    .bottom-list li + li {
+      margin-top: 2px;
+    }
+
+    /* 动画关键帧 */
+    @keyframes a1 {
+      0%,100% { transform: translate(0,0); }
+      50% { transform: translate(3px,-5px); }
+    }
+    @keyframes a2 {
+      0%,100% { transform: translate(0,0); }
+      50% { transform: translate(-4px,-3px); }
+    }
+    @keyframes a3 {
+      0%,100% { transform: translate(0,0); }
+      50% { transform: translate(3px,4px); }
+    }
+    @keyframes arrowPulse {
+      0%,100% { transform: translateX(0); opacity:0.45; }
+      50% { transform: translateX(4px); opacity:0.9; }
+    }
+    @keyframes adsorb {
+      0%   { transform: translate(0,0); }
+      30%  { transform: translate(20px,-10px); }
+      55%  { transform: translate(20px,-10px); }
+      100% { transform: translate(0,0); }
+    }
+    @keyframes electronMove {
+      0%   { transform: translateX(0); opacity:0; }
+      15%  { opacity:1; }
+      50%  { transform: translateX(30px); opacity:1; }
+      85%  { opacity:1; }
+      100% { transform: translateX(0); opacity:0; }
+    }
+
+    /* 响应式 */
+    @media (max-width: 900px) {
+      .row-3col { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 700px) {
+      .row-2col { grid-template-columns: 1fr; }
+    }
+
+    /* 新增：Projects 样式 */
+    .projects-section {
+      padding: 3rem 0 6rem;
+      display: flex;
+      justify-content: center;
+    }
+    .projects-wrapper {
+      width: 100%;
+      max-width: 1100px;
+    }
+    .project-title-main {
+      text-align: center;
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #4b5563;
+      margin-bottom: 40px;
+    }
+    .project-item {
+      margin-bottom: 50px;
+      border-radius: 14px;
+      border: none; 
+      background: transparent; 
+      padding: 30px; 
+      text-align: center;
+    }
+    .project-item:last-child {
+      margin-bottom: 0;
+    }
+    .project-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+    .project-image {
+      width: 100%;
+      max-width: 700px;
+      height: auto;
+      display: block;
+      margin: 0 auto 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .project-image-placeholder {
+      display: none;
+    }
+    .project-description {
+      font-size: 1rem;
+      color: #333;
+      line-height: 1.6;
+      max-width: 1000px;
+      margin: 0 auto;
+      text-align: justify;
+    }
+
+    /* ========= 新增：进入页面和滚动时的轻微出现动画 ========= */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.delay-1 { transition-delay: 0.1s; }
+    .reveal.delay-2 { transition-delay: 0.2s; }
+    .reveal.delay-3 { transition-delay: 0.3s; }
+
+    .reveal.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    /* ========= 动画结束 ========= */
+
+  </style>
+</head>
+<body>
+
+  <svg style="display: none;">
+    <filter id="noiseFilter">
+      <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" stitchTiles="stitch" />
+    </filter>
+  </svg>
+
+  <div class="ambient-canvas">
+    <div class="blob-container">
+      <div class="blob blob-purple"></div>
+      <div class="blob blob-blue"></div>
+      <div class="blob blob-cyan"></div>
+    </div>
+    <div class="noise-overlay"></div>
+  </div>
+
+  <header class="site-header">
+    <div class="site-header-inner">
+      <div class="site-logo">XICHENG HE</div>
+      <nav class="site-nav">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="research.html" class="active">Research</a>
+        <a href="publications.html">Publications</a>
+        <a href="cv.pdf" class="cv-link">CV</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="content-wrapper">
+    <h1 class="page-title reveal delay-1">Research</h1>
+    <p class="page-subtitle reveal delay-2">
+      Investigating interfacial processes at the energy–water–resource nexus to inform sustainable engineering solutions.
+    </p>
+
+    <section class="research-section" id="research-overview">
+      <div class="research-inner reveal delay-3">
+        <div class="research-title">Research overview</div>
+        <div class="research-subtitle">
+          Interfacial processes in natural and engineered environments
+        </div>
+
+        <div class="research-graphic-wrap">
+          <svg class="research-graphic" viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="research-venn-title">
+            <title id="research-venn-title">Interfacial processes in natural and engineered environments</title>
+
+            <defs>
+              <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="55" result="blur" />
+                <feColorMatrix
+                  in="blur"
+                  type="matrix"
+                  values="1 0 0 0 0
+                          0 1 0 0 0
+                          0 0 1 0 0
+                          0 0 0 0.8 0"
+                  result="soft"
+                />
+                <feBlend in="SourceGraphic" in2="soft" mode="normal" />
+              </filter>
+
+              <radialGradient id="grad-left" cx="30%" cy="25%" r="80%">
+                <stop offset="0%"  stop-color="#90a98b" stop-opacity="0.98" />
+                <stop offset="45%" stop-color="#90a98b" stop-opacity="0.82" />
+                <stop offset="100%" stop-color="#90a98b" stop-opacity="0" />
+              </radialGradient>
+
+              <radialGradient id="grad-middle" cx="45%" cy="30%" r="85%">
+                <stop offset="0%"  stop-color="#e7d88a" stop-opacity="0.98" />
+                <stop offset="45%" stop-color="#e7d88a" stop-opacity="0.82" />
+                <stop offset="100%" stop-color="#e7d88a" stop-opacity="0" />
+              </radialGradient>
+
+              <radialGradient id="grad-right" cx="65%" cy="25%" r="80%">
+                <stop offset="0%"  stop-color="#7fa0b4" stop-opacity="0.98" />
+                <stop offset="45%" stop-color="#7fa0b4" stop-opacity="0.82" />
+                <stop offset="100%" stop-color="#7fa0b4" stop-opacity="0" />
+              </radialGradient>
+            </defs>
+
+            <g class="research-bubble" filter="url(#softGlow)">
+              <circle cx="260" cy="240" r="180" fill="url(#grad-left)" />
+            </g>
+            <g class="research-bubble research-bubble-right" filter="url(#softGlow)">
+              <circle cx="640" cy="240" r="180" fill="url(#grad-right)" />
+            </g>
+            <g class="research-bubble research-bubble-middle" filter="url(#softGlow)">
+              <circle cx="450" cy="240" r="180" fill="url(#grad-middle)" />
+            </g>
+
+            <text x="210" y="170" text-anchor="middle" fill="#ffffff" font-size="22" font-weight="600">
+              Natural
+            </text>
+            <text x="210" y="198" text-anchor="middle" fill="#ffffff" font-size="22" font-weight="600">
+              environments
+            </text>
+            <text x="210" y="240" text-anchor="middle" fill="#f5f5f5" font-size="16">
+              Rare earth
+            </text>
+            <text x="210" y="260" text-anchor="middle" fill="#f5f5f5" font-size="16">
+              elements
+            </text>
+            <text x="210" y="292" text-anchor="middle" fill="#f5f5f5" font-size="16">
+              Palladium group
+            </text>
+            <text x="210" y="312" text-anchor="middle" fill="#f5f5f5" font-size="16">
+              elements
+            </text>
+            <text x="210" y="344" text-anchor="middle" fill="#ffffff" font-size="20" font-weight="600">
+              Resource recovery
+            </text>
+
+            <text x="690" y="170" text-anchor="middle" fill="#ffffff" font-size="22" font-weight="600">
+              Engineered
+            </text>
+            <text x="690" y="198" text-anchor="middle" fill="#ffffff" font-size="22" font-weight="600">
+              environments
+            </text>
+            <text x="690" y="240" text-anchor="middle" fill="#f5f5f5" font-size="16">
+              Selenium
+            </text>
+            <text x="735" y="265" text-anchor="middle" fill="#f5f5f5" font-size="16">
+              Chromium
+            </text>
+            <text x="660" y="290" text-anchor="middle" fill="#f5f5f5" font-size="16">
+              Uranium
+            </text>
+            <text x="735" y="315" text-anchor="middle" fill="#f5f5f5" font-size="16">
+              Arsenic
+            </text>
+            <text x="690" y="350" text-anchor="middle" fill="#ffffff" font-size="20" font-weight="600">
+              Water treatment
+            </text>
+
+            <text x="450" y="200" text-anchor="middle" fill="#304357" font-size="22" font-weight="600">
+              Aquatic chemistry
+            </text>
+            <text x="450" y="232" text-anchor="middle" fill="#304357" font-size="22" font-weight="600">
+              Material characterization
+            </text>
+            <text x="450" y="264" text-anchor="middle" fill="#304357" font-size="22" font-weight="600">
+              Electrochemistry
+            </text>
+            <text x="450" y="302" text-anchor="middle" fill="#555555" font-size="18">
+              Iron oxides as reactive surfaces
+            </text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <section class="approach-section" id="approaches">
+      <div class="approach-wrapper reveal">
+        <h2 class="approach-title">Approaches to Probe Interfacial Processes</h2>
+
+        <div class="approach-card">
+          <div class="layout">
+
+            <div class="row-3col">
+
+              <div class="tile-reaction">
+                <div class="block-title">Phase transformation</div>
+
+                <div class="scene">
+                  <div class="mol-group">
+                    <div class="molecule m1">
+                      <div class="atom atom-fe"></div>
+                      <div class="atom atom-fe"></div>
+                      <div class="atom atom-fe"></div>
+                    </div>
+                    <div class="mol-label">Solids</div>
+                  </div>
+
+                  <div class="arrow">→</div>
+
+                  <div class="mol-group">
+                    <div class="molecule m1">
+                      <div class="atom atom-oxide"></div>
+                      <div class="atom atom-oxide"></div>
+                    </div>
+                    <div class="mol-label">Transformed solids</div>
+                  </div>
+                </div>
+
+                <div class="block-sub"><b>Iron solid analysis</b></div>
+                <ul class="block-list">
+                  <li>X-ray diffraction</li>
+                  <li>Dynamic light scattering</li>
+                  <li>Scanning electron microscopy</li>
+                </ul>
+              </div>
+
+              <div class="tile-reaction">
+                <div class="block-title">Adsorption</div>
+
+                <div class="scene">
+                  <div class="molecule m2">
+                    <div class="atom atom-oxyanion ads-ox"></div>
+                    <div class="atom atom-fe"></div>
+                    <div class="atom atom-fe"></div>
+                    <span class="oxy-label">Oxyanion</span>
+                    <span class="solid-label">Solids</span>
+                  </div>
+                </div>
+
+                <div class="block-sub"><b>Coordination analysis</b></div>
+                <ul class="block-list">
+                  <li>X-ray absorption spectroscopy</li>
+                  <li>Zeta-potential</li>
+                </ul>
+              </div>
+
+              <div class="tile-reaction">
+                <div class="block-title">Redox</div>
+
+                <div class="scene scene-redox">
+                  <div class="reactant-group">
+                    <div class="molecule m3-left">
+                      <div class="atom atom-redox"></div>
+                      <div class="atom atom-fe"></div>
+                    </div>
+                    <div class="electron-dot"></div>
+                  </div>
+
+                  <div class="arrow">→</div>
+
+                  <div class="molecule m3-right">
+                    <div class="atom atom-product"></div>
+                    <div class="atom atom-fe"></div>
+                  </div>
+                </div>
+
+                <div class="block-sub"><b>Redox speciation analysis</b></div>
+                <ul class="block-list">
+                  <li>X-ray absorption/emission spectroscopy</li>
+                  <li>X-ray photoelectron spectroscopy</li>
+                  <li>Chemical extraction</li>
+                </ul>
+              </div>
+
+            </div>
+
+            <div class="row-2col">
+              <div class="tile-bottom">
+                <div class="bottom-title">Aqueous analysis</div>
+                <ul class="bottom-list">
+                  <li>ICP-MS</li>
+                  <li>IC</li>
+                </ul>
+              </div>
+
+              <div class="tile-bottom">
+                <div class="bottom-title">Modeling</div>
+                <ul class="bottom-list">
+                  <li>Speciation modeling</li>
+                  <li>Surface complexation modeling</li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+    </section>
+
+    <section class="projects-section" id="projects">
+      <div class="projects-wrapper reveal">
+        <h2 class="project-title-main">Selected Research Projects</h2>
+        
+        <div class="project-item">
+          <div class="project-title">Continuous flow-through iron electrocoagulation for selenate removal</div>
+          <img src="project1.jpg" alt="Continuous flow-through iron electrocoagulation system diagram" class="project-image"> 
+          <p class="project-description">
+            Selenium (Se) is an essential trace element, but at elevated levels it is toxic to humans and aquatic life. We developed a continuous flow-through iron electrocoagulation process to remove selenate [Se(VI)] from water and bridge laboratory studies with real-world treatment applications. Under optimized conditions, this system achieved over 98% selenium removal with reactor residence times as short as 11 s. We further evaluated the process in complex waters containing naturally occurring salts and organic matter that commonly inhibit treatment performance. Advanced solid characterization revealed how reactive iron minerals capture and chemically transform selenium into stable, low-toxicity forms. Together, this work provides mechanistic guidance for designing modular, autonomous, and effective electrochemical treatment systems for selenium-contaminated waters.
+          </p>
+        </div>
+
+        <div class="project-item">
+          <div class="project-title">Interfacial chemistry of critical elements</div>
+          <img src="project2.jpg" alt="Diagram showing the adsorption of critical elements onto a mineral surface" class="project-image">
+          <p class="project-description">
+            Rare earth elements and platinum group elements are critical materials used in clean energy technologies, electronics, and catalysis. Our work focuses on the interfacial chemistry of these critical elements at mineral and aqueous interfaces. We quantified their adsorption behavior under diverse environmental conditions. Using spectroscopy, we resolved how these elements interact with reactive mineral surfaces at the molecular scale and identified the fundamental binding mechanisms. We further developed predictive models to understand and forecast the occurrence of these critical elements across different environmental settings. These insights can inform extraction strategies and help identify new sources of critical elements.
+          </p>
+        </div>
+
+        <div class="project-item">
+          <div class="project-title">Chemical and physical processes governing arsenic, chromium， and uranium removal in electrocoagulation</div>
+          <img src="project3.jpg" alt="Illustration of chemical precipitation and particle aggregation in water treatment" class="project-image">
+          <p class="project-description">
+            Arsenic, chromium, and uranium are toxic metals that are frequently present in groundwater and pose serious risks to human health. Our work investigates how these contaminants are removed under realistic water treatment conditions. We show that contaminant removal is controlled not only by chemical reactions such as reduction and adsorption, but also by physical processes, including particle aggregation and settling. By systematically varying water chemistry, we reveal how naturally occurring constituents can either promote or inhibit removal by altering both reaction pathways and particle behavior. We aim to establish a generalized mechanistic understanding that guides the design of robust and reliable electrochemical systems for safe drinking water treatment.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <!-- 轻微出现动画的脚本：进入视口时给元素加 in-view -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const reveals = document.querySelectorAll(".reveal");
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("in-view");
+              // 只在第一次出现时播放动画
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          threshold: 0.15
+        }
+      );
+
+      reveals.forEach((el) => {
+        observer.observe(el);
+      });
+    });
+  </script>
+
+</body>
+</html>

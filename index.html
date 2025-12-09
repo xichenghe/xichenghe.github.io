@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Xicheng He</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont,
+        "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+      background: #ffffff;
+      color: #111111;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* 顶部导航 */
+    .site-header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 20;
+      padding: 1rem 2.4rem; display: flex; justify-content: center;
+      pointer-events: none;
+    }
+    .site-header-inner {
+      width: 100%; max-width: 1200px;
+      display: flex; align-items: center; justify-content: space-between;
+      pointer-events: auto;
+    }
+    .site-logo {
+      font-size: 0.9rem; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
+    }
+    .site-nav { display: flex; gap: 1.6rem; font-size: 0.9rem; align-items: center; }
+    .site-nav a {
+      position: relative; opacity: 0.78; padding-bottom: 0.1rem;
+      transition: opacity 0.18s ease, color 0.18s ease;
+    }
+    .site-nav a::after {
+      content: ""; position: absolute; left: 0; bottom: 0;
+      width: 0; height: 1px; background: #111111; transition: width 0.2s ease;
+    }
+
+.cv-link {
+  padding: 0.12rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  font-size: 0.82rem;
+}
+
+/* ✅ 彻底禁止 CV 使用下滑线伪元素 */
+.site-nav .cv-link::after,
+.site-nav .cv-link:hover::after {
+  content: none;
+  width: 0;
+  height: 0;
+}
+
+    .site-nav a:hover { opacity: 1; color: #000000; }
+    .site-nav a:hover::after { width: 100%; }
+.cv-link:hover {
+  background: rgba(17, 17, 17, 0.12);
+  color: #000000;
+  border-color: rgba(17, 17, 17, 0.65);
+  opacity: 1;
+}
+
+    @media (max-width: 720px) {
+      .site-header { padding-inline: 1.2rem; }
+      .site-nav { gap: 1.1rem; font-size: 0.82rem; }
+    }
+    @media (max-width: 560px) { .site-nav { display: none; } }
+
+    /* HERO */
+    .hero {
+      position: relative; min-height: 100vh; width: 100%;
+      overflow: hidden; display: flex; align-items: stretch; justify-content: center;
+    }
+    .hero-inner { position: relative; width: 100%; max-width: 1200px; margin: 0 auto; }
+    .hero::before {
+      content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.25;
+      background-image:
+        radial-gradient(circle at 0 0, #00000006 0, transparent 55%),
+        radial-gradient(circle at 100% 100%, #00000006 0, transparent 55%);
+    }
+    .hero-blob {
+      position: absolute; top: 4vh; left: 50%;
+      width: min(64vw, 680px); height: min(64vw, 680px);
+      transform: translateX(-50%);
+      background:
+        radial-gradient(circle at 18% 18%, rgba(40, 120, 255, 0.9), transparent 64%),
+        radial-gradient(circle at 72% 40%, rgba(26, 188, 156, 0.8), transparent 68%),
+        radial-gradient(circle at 40% 80%, rgba(20, 60, 160, 0.95), transparent 72%);
+      filter: blur(70px); opacity: 0.95;
+      animation: blobMorph 10s ease-in-out infinite alternate;
+    }
+    @keyframes blobMorph {
+      0% { border-radius: 55% 45% 60% 40% / 58% 42% 60% 42%; transform: translate(-50%, 0) scale(1); }
+      20% { border-radius: 78% 22% 52% 48% / 40% 76% 30% 70%; transform: translate(-47%, 6%) scale(1.18); }
+      40% { border-radius: 42% 58% 46% 54% / 72% 34% 66% 28%; transform: translate(-53%, -4%) scale(0.94); }
+      60% { border-radius: 64% 36% 66% 34% / 30% 74% 26% 70%; transform: translate(-48%, 5%) scale(1.12); }
+      80% { border-radius: 50% 50% 58% 42% / 64% 32% 68% 30%; transform: translate(-52%, -3%) scale(1.02); }
+      100% { border-radius: 56% 44% 60% 40% / 56% 44% 58% 42%; transform: translate(-50%, 1%) scale(1.05); }
+    }
+
+    .hero-text {
+      position: absolute; left: 50%; top: 62vh;
+      transform: translate(-50%, -50%);
+      text-align: center; padding: 0 1.5rem;
+    }
+.hero-name {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: clamp(3.4rem, 6vw, 4.8rem);
+  font-weight: 400;
+  letter-spacing: 0.18em;   /* ✅ 核心：制造 PORTFOLIO 那种感觉 */
+  text-transform: uppercase;
+  color: #111111;
+  white-space: nowrap;
+
+  animation: textFadeUp 0.9s ease-out forwards;
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+
+
+
+    .hero-sub {
+      margin-top: 1rem; font-size: 1rem;
+      color: #333333; line-height: 1.6;
+      animation: textFadeUp 0.9s ease-out forwards; animation-delay: 0.18s;
+      opacity: 0; transform: translateY(18px);
+    }
+    .hero-tags {
+      margin-top: 0.6rem; font-size: 0.9rem; color: #222222; font-weight: 500;
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 0.9rem;
+      animation: textFadeUp 0.9s ease-out forwards; animation-delay: 0.32s;
+      opacity: 0; transform: translateY(18px);
+    }
+    @keyframes textFadeUp { to { opacity: 1; transform: translateY(0); } }
+
+    .scroll-indicator {
+      position: absolute; left: 50%; bottom: 3.2rem;
+      width: 18px; height: 18px;
+      transform: translateX(-50%);
+      pointer-events: none;
+      animation: arrowFloat 1.6s ease-in-out infinite;
+    }
+    .scroll-indicator::before,
+    .scroll-indicator::after {
+      content: ""; position: absolute; top: 4px;
+      width: 1.5px; height: 10px; background: rgba(0, 0, 0, 0.6);
+    }
+    .scroll-indicator::before { left: 4px; transform: rotate(-40deg); }
+    .scroll-indicator::after { right: 4px; transform: rotate(40deg); }
+    @keyframes arrowFloat {
+      0% { transform: translate(-50%, 0); opacity: 0.45; }
+      50% { transform: translate(-50%, 10px); opacity: 0.85; }
+      100% { transform: translate(-50%, 0); opacity: 0.45; }
+    }
+
+    @media (max-width: 640px) {
+      .hero-blob {
+        top: 8vh;
+        width: min(72vw, 540px);
+        height: min(72vw, 540px);
+        filter: blur(60px);
+      }
+      .hero-text { top: 64vh; }
+      .hero-name {
+        font-size: clamp(2.6rem, 7vw, 3.2rem);
+        letter-spacing: 0.16em;
+      }
+      .scroll-indicator { bottom: 2.4rem; }
+    }
+
+    /* About */
+    .about-section {
+      padding: 3.5rem 2.4rem 3.5rem;
+      display: flex; justify-content: center;
+    }
+    .about-inner { width: 100%; max-width: 1100px; }
+    .about-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 2.1fr);
+      gap: 2.8rem; align-items: center;
+    }
+    .about-photo-wrap { display: flex; justify-content: center; }
+    .about-photo {
+      max-width: 210px; width: 100%;
+      border-radius: 20px; overflow: hidden;
+    }
+    .about-photo img { display: block; width: 100%; height: auto; }
+    .about-text p {
+      font-size: 0.98rem; line-height: 1.8;
+      color: #333333; margin-bottom: 0.8rem;
+    }
+    .about-links {
+      margin-top: 1.2rem;
+      display: flex; flex-wrap: wrap; gap: 0.6rem;
+    }
+    .about-link-pill {
+      font-size: 0.85rem; border-radius: 999px;
+      border: 1px solid rgba(0, 0, 0, 0.18);
+      padding: 0.4rem 0.9rem; background: #ffffff;
+      transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .about-link-pill:hover {
+      background: #f2f5ff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+      transform: translateY(-1px);
+    }
+    @media (max-width: 900px) {
+      .about-section { padding-inline: 1.6rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .about-photo-wrap { justify-content: flex-start; }
+    }
+    @media (max-width: 640px) {
+      .about-section { padding-top: 3.2rem; }
+      .about-photo-wrap { justify-content: center; }
+      .about-text p { font-size: 0.95rem; }
+    }
+
+    /* Research overview */
+    .research-section {
+      padding: 3rem 2.4rem 4.5rem;
+      display: flex; justify-content: center;
+    }
+    .research-inner {
+      width: 100%; max-width: 1100px; text-align: center;
+    }
+    .research-title {
+      font-size: 1.3rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: #4b5563; margin-bottom: 1rem;
+    }
+    .research-subtitle {
+      font-size: 1.8rem; font-weight: 600;
+      color: #111827; margin-bottom: 2.4rem;
+    }
+    .research-graphic-wrap {
+      display: flex; justify-content: center;
+    }
+    .research-graphic {
+      width: 100%; max-width: 900px; overflow: visible;
+    }
+    .research-graphic text {
+      font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont,
+        "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    /* 三个圆：柔和漂浮呼吸 */
+    .research-bubble {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: bubbleDrift 24s ease-in-out infinite alternate;
+    }
+    .research-bubble-middle {
+      animation-duration: 28s;
+      animation-delay: 0.6s;
+    }
+    .research-bubble-right {
+      animation-duration: 32s;
+      animation-delay: 1.2s;
+    }
+    @keyframes bubbleDrift {
+      0%   { transform: translate(0px, 2px)  scale(1.0);  opacity: 0.95; }
+      25%  { transform: translate(-8px, -6px) scale(1.03); opacity: 1; }
+      50%  { transform: translate(6px, 4px)  scale(0.99); opacity: 0.96; }
+      75%  { transform: translate(-5px, 7px) scale(1.02); opacity: 0.98; }
+      100% { transform: translate(4px, -3px) scale(1.0);  opacity: 0.97; }
+    }
+
+    @media (max-width: 800px) {
+      .research-subtitle { font-size: 1.5rem; }
+    }
+
+    /* Footer：去掉那条线 */
+    .site-footer {
+      padding: 2rem 2.4rem 2.8rem;
+      display: flex;
+      justify-content: center;
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+    .site-footer-inner {
+      width: 100%;
+      max-width: 1100px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+/* ✅ 统一拉开 hero → about */
+section {
+  margin-bottom: 6rem;
+}
+
+/* ✅ about 和 research 靠近一点 */
+.about-section {
+  padding-top: 5rem;
+  padding-bottom: 3rem;
+}
+
+.research-section {
+  padding-top: 3rem;
+  padding-bottom: 6rem;
+}
+
+
+  </style>
+</head>
+<body>
+  <!-- 顶部导航 -->
+  <header class="site-header">
+    <div class="site-header-inner">
+      <div class="site-logo">XICHENG HE</div>
+      <nav class="site-nav">
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="research.html">Research</a>
+  <a href="publications.html">Publications</a>
+  <a href="cv.pdf" class="cv-link">CV</a>
+</nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-inner">
+      <div class="hero-blob" aria-hidden="true"></div>
+      <div class="hero-text">
+        <div class="hero-name">Xicheng He</div>
+        <div class="hero-sub">
+          Ph.D. candidate, Energy, Environmental &amp; Chemical Engineering,<br />
+          Washington University in St. Louis.
+        </div>
+        <div class="hero-tags">
+          <span>Water</span>
+          <span>Energy</span>
+          <span>Resources</span>
+        </div>
+      </div>
+      <div class="scroll-indicator"></div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="about-section" id="about">
+    <div class="about-inner">
+      <div class="about-grid">
+        <div class="about-photo-wrap">
+          <div class="about-photo">
+            <img src="xicheng-portrait.jpg" alt="Portrait of Xicheng He" />
+          </div>
+        </div>
+        <div class="about-text">
+          <p>
+            I am a Ph.D. candidate in Energy, Environmental &amp; Chemical Engineering at
+            Washington University in St. Louis. My research aims to understand interfacial
+            processes that govern contaminant transformation and mineral reactivity in complex
+            environments.
+          </p>
+          <p>
+            I use this mechanistic understanding to inform both water treatment and resource
+            recovery. My work bridges fundamental mechanisms and engineering applications to
+            address challenges at the energy–water–resource nexus.
+          </p>
+          <div class="about-links">
+            <a class="about-link-pill" href="https://scholar.google.com/citations?user=-pJfY68AAAAJ" target="_blank" rel="noopener noreferrer">
+              Google Scholar
+            </a>
+            <a class="about-link-pill" href="https://www.linkedin.com/in/xicheng-he-562439234/" target="_blank" rel="noopener noreferrer">
+              LinkedIn
+            </a>
+            <a class="about-link-pill" href="mailto:h.xicheng@wustl.edu">
+              h.xicheng@wustl.edu
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Research overview：基于原配色的呼吸 Venn -->
+  <section class="research-section" id="research">
+    <div class="research-inner">
+      <div class="research-title">Research overview</div>
+      <div class="research-subtitle">
+        Interfacial processes in natural and engineered environments
+      </div>
+
+      <div class="research-graphic-wrap">
+        <svg class="research-graphic" viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="research-venn-title">
+          <title id="research-venn-title">Interfacial processes in natural and engineered environments</title>
+
+          <defs>
+            <!-- 边缘柔化 -->
+            <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="55" result="blur" />
+              <feColorMatrix
+                in="blur"
+                type="matrix"
+                values="1 0 0 0 0
+                        0 1 0 0 0
+                        0 0 1 0 0
+                        0 0 0 0.8 0"
+                result="soft"
+              />
+              <feBlend in="SourceGraphic" in2="soft" mode="normal" />
+            </filter>
+
+            <!-- 原始配色渐变 -->
+            <radialGradient id="grad-left" cx="30%" cy="25%" r="80%">
+              <stop offset="0%"  stop-color="#90a98b" stop-opacity="0.98" />
+              <stop offset="45%" stop-color="#90a98b" stop-opacity="0.82" />
+              <stop offset="100%" stop-color="#90a98b" stop-opacity="0" />
+            </radialGradient>
+
+            <radialGradient id="grad-middle" cx="45%" cy="30%" r="85%">
+              <stop offset="0%"  stop-color="#e7d88a" stop-opacity="0.98" />
+              <stop offset="45%" stop-color="#e7d88a" stop-opacity="0.82" />
+              <stop offset="100%" stop-color="#e7d88a" stop-opacity="0" />
+            </radialGradient>
+
+            <radialGradient id="grad-right" cx="65%" cy="25%" r="80%">
+              <stop offset="0%"  stop-color="#7fa0b4" stop-opacity="0.98" />
+              <stop offset="45%" stop-color="#7fa0b4" stop-opacity="0.82" />
+              <stop offset="100%" stop-color="#7fa0b4" stop-opacity="0" />
+            </radialGradient>
+          </defs>
+
+          <!-- 注意画的顺序：
+               1. 绿圈
+               2. 蓝圈
+               3. 黄圈在最上层（不再和蓝圈产生额外的渐变混合） -->
+          <g class="research-bubble" filter="url(#softGlow)">
+            <circle cx="260" cy="240" r="180" fill="url(#grad-left)" />
+          </g>
+          <g class="research-bubble research-bubble-right" filter="url(#softGlow)">
+            <circle cx="640" cy="240" r="180" fill="url(#grad-right)" />
+          </g>
+          <g class="research-bubble research-bubble-middle" filter="url(#softGlow)">
+            <circle cx="450" cy="240" r="180" fill="url(#grad-middle)" />
+          </g>
+
+          <!-- 左侧文本：分行 -->
+          <text x="210" y="170" text-anchor="middle" fill="#ffffff" font-size="22" font-weight="600">
+            Natural
+          </text>
+          <text x="210" y="198" text-anchor="middle" fill="#ffffff" font-size="22" font-weight="600">
+            environments
+          </text>
+          <text x="210" y="240" text-anchor="middle" fill="#f5f5f5" font-size="16">
+            Rare earth
+          </text>
+          <text x="210" y="260" text-anchor="middle" fill="#f5f5f5" font-size="16">
+            elements
+          </text>
+          <text x="210" y="292" text-anchor="middle" fill="#f5f5f5" font-size="16">
+            Palladium group
+          </text>
+          <text x="210" y="312" text-anchor="middle" fill="#f5f5f5" font-size="16">
+            elements
+          </text>
+          <text x="210" y="344" text-anchor="middle" fill="#ffffff" font-size="20" font-weight="600">
+            Resource recovery
+          </text>
+
+          <!-- 右侧文本 -->
+          <text x="690" y="170" text-anchor="middle" fill="#ffffff" font-size="22" font-weight="600">
+            Engineered
+          </text>
+          <text x="690" y="198" text-anchor="middle" fill="#ffffff" font-size="22" font-weight="600">
+            environments
+          </text>
+          <text x="690" y="240" text-anchor="middle" fill="#f5f5f5" font-size="16">
+            Selenium
+          </text>
+          <text x="735" y="265" text-anchor="middle" fill="#f5f5f5" font-size="16">
+            Chromium
+          </text>
+          <text x="660" y="290" text-anchor="middle" fill="#f5f5f5" font-size="16">
+            Uranium
+          </text>
+          <text x="735" y="315" text-anchor="middle" fill="#f5f5f5" font-size="16">
+            Arsenic
+          </text>
+          <text x="690" y="350" text-anchor="middle" fill="#ffffff" font-size="20" font-weight="600">
+            Water treatment
+          </text>
+
+          <!-- 中间文本 -->
+          <text x="450" y="200" text-anchor="middle" fill="#304357" font-size="22" font-weight="600">
+            Aquatic chemistry
+          </text>
+          <text x="450" y="232" text-anchor="middle" fill="#304357" font-size="22" font-weight="600">
+            Material characterization
+          </text>
+          <text x="450" y="264" text-anchor="middle" fill="#304357" font-size="22" font-weight="600">
+            Electrochemistry
+          </text>
+          <text x="450" y="302" text-anchor="middle" fill="#555555" font-size="18">
+            Iron oxides as reactive surfaces
+          </text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- 占位 -->
+  <section id="publications"></section>
+  <section id="cv"></section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+      <div>© 2025 Xicheng He</div>
+      <div>
+        Contact:
+        <a href="mailto:h.xicheng@wustl.edu">h.xicheng@wustl.edu</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
