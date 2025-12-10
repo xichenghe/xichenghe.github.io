@@ -47,6 +47,69 @@
   font-size: 0.9rem;
   align-items: center;
 }
+/* ===== 手机端导航按钮 ===== */
+.menu-toggle {
+  display: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 1rem;
+
+  width: 26px;
+  height: 22px;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  border-radius: 999px;
+  background: #111111;
+}
+
+/* ===== 手机端改为：按钮 + 下拉菜单 ===== */
+@media (max-width: 640px) {
+  .site-header {
+    padding: 0.8rem 1.4rem;
+  }
+
+  .site-header-inner {
+    position: relative;
+  }
+
+  /* 显示按钮 */
+  .menu-toggle {
+    display: flex;
+  }
+
+  /* 默认隐藏导航，变为下拉卡片 */
+  .site-nav {
+    position: absolute;
+    top: 110%;
+    right: 0;
+
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.96);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    font-size: 0.85rem;
+    z-index: 60;
+  }
+
+  /* ✅ 点击按钮后展开 */
+  .site-header.nav-open .site-nav {
+    display: flex;
+  }
+}
 
 /* 和 index 一样的写法：轻微透明 + 下划线动画 */
 .site-nav a {
@@ -400,18 +463,19 @@
     <div class="noise-overlay"></div>
   </div>
 
-  <header class="site-header">
-    <div class="site-header-inner">
-      <div class="site-logo">XICHENG HE</div>
-      <nav class="site-nav">
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="research.html">Research</a>
-        <a href="publications.html" class="active">Publications</a>
-        <a href="cv.pdf" class="cv-link">CV</a>
-      </nav>
-    </div>
-  </header>
+<header class="site-header">
+  <div class="site-header-inner">
+    <div class="site-logo">XICHENG HE</div>
+    <nav class="site-nav">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="research.html">Research</a>
+      <a href="publications.html" class="active">Publications</a>
+      <a href="cv.pdf" class="cv-link">CV</a>
+    </nav>
+  </div>
+</header>
+
 
   <div class="content-wrapper">
     <h1 class="page-title">Publications</h1>
@@ -641,34 +705,42 @@
   </div>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    // 需要做滚动出现动画的元素：
+    /* ✅ 你原本的滚动出现动画 */
     const targets = document.querySelectorAll(
       ".page-title, .scholar-link-section, .publication-item"
     );
 
-    // 先给它们加上 fade-reveal 初始状态
     targets.forEach(function (el) {
       el.classList.add("fade-reveal");
     });
 
-    // 用 IntersectionObserver 监听是否滚动到视口
     const observer = new IntersectionObserver(
       function (entries, obs) {
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
-            entry.target.classList.add("visible"); // 淡入
-            obs.unobserve(entry.target);           // 只动画一次
+            entry.target.classList.add("visible");
+            obs.unobserve(entry.target);
           }
         });
       },
       {
-        threshold: 0.15 // 元素有大约 15% 出现在视口就触发
+        threshold: 0.15
       }
     );
 
     targets.forEach(function (el) {
       observer.observe(el);
     });
+
+    /* ✅ ✅ ✅ 手机端导航按钮开关（新增） */
+    const header = document.querySelector(".site-header");
+    const toggle = document.querySelector(".menu-toggle");
+
+    if (header && toggle) {
+      toggle.addEventListener("click", function () {
+        header.classList.toggle("nav-open");
+      });
+    }
   });
 </script>
 
