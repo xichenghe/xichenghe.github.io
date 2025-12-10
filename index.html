@@ -101,6 +101,72 @@
     gap: 0.6rem;
   }
 }
+/* 小菜单按钮（电脑端默认隐藏） */
+.menu-toggle {
+  display: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 1rem;
+
+  width: 26px;
+  height: 22px;
+  display: none;              /* 默认不显示，下面媒体查询再打开 */
+
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  border-radius: 999px;
+  background: #111111;
+}
+
+/* 保持你原来的 720px 设置 */
+@media (max-width: 720px) {
+  .site-header { padding-inline: 1.2rem; }
+  .site-nav { gap: 1.1rem; font-size: 0.82rem; }
+}
+
+/* 手机端：导航改为下拉菜单，右上角出现按钮 */
+@media (max-width: 640px) {
+  .site-header-inner {
+    position: relative;
+  }
+
+  /* 显示菜单按钮 */
+  .menu-toggle {
+    display: flex;
+  }
+
+  /* 默认把导航藏起来，变成卡片式 dropdown */
+  .site-nav {
+    position: absolute;
+    top: 110%;
+    right: 0;
+
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.96);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    font-size: 0.85rem;
+  }
+
+  /* 点击按钮后，展开菜单 */
+  .site-header.nav-open .site-nav {
+    display: flex;
+  }
+}
 
 
     /* HERO */
@@ -344,18 +410,27 @@ section {
 </head>
 <body>
   <!-- 顶部导航 -->
-  <header class="site-header">
-    <div class="site-header-inner">
-      <div class="site-logo">XICHENG HE</div>
-      <nav class="site-nav">
-  <a href="index.html">Home</a>
-  <a href="about.html">About</a>
-  <a href="research.html">Research</a>
-  <a href="publications.html">Publications</a>
-  <a href="cv.pdf" class="cv-link">CV</a>
-</nav>
-    </div>
-  </header>
+ <header class="site-header">
+  <div class="site-header-inner">
+    <div class="site-logo">XICHENG HE</div>
+
+    <!-- 新增：手机端的菜单按钮 -->
+    <button class="menu-toggle" aria-label="Toggle navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <nav class="site-nav">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="research.html">Research</a>
+      <a href="publications.html">Publications</a>
+      <a href="cv.pdf" class="cv-link">CV</a>
+    </nav>
+  </div>
+</header>
+
 
   <!-- HERO -->
   <section class="hero" id="hero">
@@ -554,5 +629,18 @@ section {
       </div>
     </div>
   </footer>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const header = document.querySelector(".site-header");
+    const toggle = document.querySelector(".menu-toggle");
+
+    if (header && toggle) {
+      toggle.addEventListener("click", function () {
+        header.classList.toggle("nav-open");
+      });
+    }
+  });
+</script>
+
 </body>
 </html>
